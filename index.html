@@ -5,22 +5,93 @@
     <link rel="stylesheet" type="text/css" href="//checkfront-cdn.thebackoffice.io/app.css" />
 
     <script>
+
+      function processAppMessage(m) {
+        let message;
+        try {
+          message = JSON.parse(m.data)
+        } catch (e) {
+          return;
+        }
+        if (typeof message.app == 'undefined' || message.app != 'tagApp') {
+          return;
+        }
+
+        //HANDLERS
+        if (message.type == 'click' && message.from == 'bookable') {
+          console.log(message)
+        }
+
+      }
+
+
       var SYS = {
+
+        included: [
+          {
+            id: 297,
+            for: ['guest', 'party'][0]
+          }
+        ],
+
+        wizardAddOns: [
+          {
+            title: "Extras",
+            category: 34
+          },
+          {
+            title: "More",
+            category: 34
+          }
+        ],
+
         wizard: [
           {
-            title: 'Step One',
-            instruction: 'Please enter the bear minimum information.',
+            title: 'Info',
+            instruction: 'Please enter information.',
             fields: [
               "customer_name",
+              "customer_email",
               "customer_phone",
             ]
           },
 
           {
-            title: 'Step Two',
+            title: 'Address',
+            instruction: 'Please enter information.',
+            fields: [
+              "customer_address",
+              "customer_city",
+              "customer_country",
+            ]
+          },
+
+          {
+            title: 'Trip',
+            instruction: 'Please enter information.',
+            fields: [
+              "hotel",
+              "pickup",
+              "cruiseship",
+              "cruisename"
+            ]
+          },
+
+          {
+            title: 'T-Shirt',
+            instruction: 'Please enter information.',
+            fields: [
+              "canadatshirt",
+              "tshirtsize",
+            ]
+          },
+
+          {
+            title: 'Legal',
             instruction: 'Please waive your lawsuit.',
             fields: [
               "any_back_injuries_pregnant_or_",
+              "notes"
             ]
           },
 
@@ -48,12 +119,10 @@
             return '$' + parseFloat(Math.round(num * 100) / 100).toFixed(2)
           },
           symbol: '$'
-        },
+        }
 
       }
     </script>
-
-
 
     <style>
 
@@ -63,7 +132,7 @@
             overflow: hidden;
         }
 
-        code{
+        code {
             font-family: monospace;
             white-space: pre;
         }
@@ -74,6 +143,10 @@
 
         button.book .label::after {
             content: 'prices';
+        }
+
+        .promo button.book .label::after {
+            content: 'book';
         }
 
         .bookable-input-label {
@@ -120,27 +193,28 @@
 
 </head>
 <body>
-
 <div style="width: 400px;">
+    <checkfront-calendar-date format="dddd, MMMM Do"></checkfront-calendar-date>
+    <checkfront-coupon></checkfront-coupon>
+
     <checkfront-calendar category-id="33"></checkfront-calendar>
 
-    <checkfront-calendar-date format="dddd, MMMM Do"></checkfront-calendar-date>
-
+    <checkfront-addons category-id=34></checkfront-addons>
     <checkfront-bookables category-id="33"></checkfront-bookables>
 
-    <checkfront-pricing></checkfront-pricing>
+    <!--<checkfront-pricing></checkfront-pricing>-->
 
-    <checkfront-promo bookable-id="288" date="2019-07-11" format="dddd, MMMM Do"></checkfront-promo>
+    <!--<checkfront-promo bookable-id="288" date="2019-09-01"></checkfront-promo>-->
 
-    <checkfront-output store-address="bookable.name"></checkfront-output>
+    <!--<checkfront-output store-address="bookable.name"></checkfront-output>-->
 
     <checkfront-bookable-inputs></checkfront-bookable-inputs>
 
-    <checkfront-bookable-outputs></checkfront-bookable-outputs>
+    <!--<checkfront-bookable-outputs></checkfront-bookable-outputs>-->
 
     <checkfront-booking-form steps="wizard"></checkfront-booking-form>
 
-    <checkfront-booking-policy></checkfront-booking-policy>
+    <!--<checkfront-booking-policy></checkfront-booking-policy>-->
 </div>
 
 <script src="//checkfront-cdn.thebackoffice.io/app.js"></script>
